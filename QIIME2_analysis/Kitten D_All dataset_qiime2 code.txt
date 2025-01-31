@@ -1,0 +1,503 @@
+14/03/2024
+
+All dataset
+Unknowns and Aria/Adeliade samples removed. Queen duplicates being treated as individual samples based on PCA and phylogenetic tree - 08042024 update
+
+Re-run 04072024 (owner anonymised)
+Re-run 17072024 (sampling timings added)
+Re-run 03092024 (breeder1 split by site)
+Re-run 17092024 Breeders remianing as orginal (No breeder1 split by site), and sample_type tidied
+
+
+export PATH=/home/r/rowen1/miniconda3/bin:$PATH
+source activate
+conda activate qiime2-2023.2
+
+qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path kittenDloadingAll_FINAL.txt --input-format PairedEndFastqManifestPhred33V2 --output-path demux-paired-end.qza
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All$ qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path kittenDloadingAll_FINAL.txt --input-format PairedEndFastqManifestPhred33V2 --output-path demux-paired-end.qza
+Imported kittenDloadingAll_FINAL.txt as PairedEndFastqManifestPhred33V2 to demux-paired-end.qza
+
+
+qiime demux summarize --i-data demux-paired-end.qza --o-visualization demux-paired-end.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All$ qiime demux summarize --i-data demux-paired-end.qza --o-visualization demux-paired-end.qzv
+Saved Visualization to: demux-paired-end.qzv
+
+**** Patrick to run ****
+
+qiime dada2 denoise-paired --p-trunc-len-f 250 --p-trim-left-f 0 --p-trunc-len-r 240 --p-trim-left-r 0 --i-demultiplexed-seqs demux-paired-end.qza --o-representative-sequences rep-seqs-12.qza --o-table table-12.qza --o-denoising-stats denoising-stats.qza
+*** Patrick ran ****
+
+*************Above this line is what was already run*************************
+********New metadata including queen name used from here********************
+
+qiime feature-table summarize --i-table table-12.qza --m-sample-metadata-file kittenDmetaAll_FINAL.txt --o-visualization table-12.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime feature-table summarize --i-table table-12.qza --m-sample-metadata-file kittenDmetaAll_FINAL.txt --o-visualization table-12.qzv
+Saved Visualization to: table-12.qzv
+
+
+qiime feature-table tabulate-seqs --i-data rep-seqs-12.qza --o-visualization rep-seqs-12.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime feature-table tabulate-seqs --i-data rep-seqs-12.qza --o-visualization rep-seqs-12.qzv
+Saved Visualization to: rep-seqs-12.qzv
+
+
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+######
+Generate a tree:
+
+qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs-12.qza --o-alignment aligned-rep-seqs.qza --o-masked-alignment masked-aligned-rep-seqs.qza --o-tree unrooted-tree.qza  --o-rooted-tree rooted-tree.qza
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs-12.qza --o-alignment aligned-rep-seqs.qza --o-masked-alignment masked-aligned-rep-seqs.qza --o-tree unrooted-tree.qza  --o-rooted-tree rooted-tree.qza
+Saved FeatureData[AlignedSequence] to: aligned-rep-seqs.qza
+Saved FeatureData[AlignedSequence] to: masked-aligned-rep-seqs.qza
+Saved Phylogeny[Unrooted] to: unrooted-tree.qza
+Saved Phylogeny[Rooted] to: rooted-tree.qza
+
+
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree.qza --i-table table-12.qza --p-sampling-depth 500 --m-metadata-file kittenDmetaAll_FINAL.txt --output-dir core-metrics-results
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree.qza --i-table table-12.qza --p-sampling-depth 500 --m-metadata-file kittenDmetaAll_FINAL.txt --output-dir core-metrics-results
+Saved FeatureTable[Frequency] to: core-metrics-results/rarefied_table.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/faith_pd_vector.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/observed_features_vector.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/shannon_vector.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/evenness_vector.qza
+Saved DistanceMatrix to: core-metrics-results/unweighted_unifrac_distance_matrix.qza
+Saved DistanceMatrix to: core-metrics-results/weighted_unifrac_distance_matrix.qza
+Saved DistanceMatrix to: core-metrics-results/jaccard_distance_matrix.qza
+Saved DistanceMatrix to: core-metrics-results/bray_curtis_distance_matrix.qza
+Saved PCoAResults to: core-metrics-results/unweighted_unifrac_pcoa_results.qza
+Saved PCoAResults to: core-metrics-results/weighted_unifrac_pcoa_results.qza
+Saved PCoAResults to: core-metrics-results/jaccard_pcoa_results.qza
+Saved PCoAResults to: core-metrics-results/bray_curtis_pcoa_results.qza
+Saved Visualization to: core-metrics-results/unweighted_unifrac_emperor.qzv
+Saved Visualization to: core-metrics-results/weighted_unifrac_emperor.qzv
+Saved Visualization to: core-metrics-results/jaccard_emperor.qzv
+Saved Visualization to: core-metrics-results/bray_curtis_emperor.qzv
+
+
+qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/faith_pd_vector.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization core-metrics-results/faith-pd-group-significance.qzv
+
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/faith_pd_vector.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization core-metrics-results/faith-pd-group-significance.qzv
+Saved Visualization to: core-metrics-results/faith-pd-group-significance.qzv
+
+
+qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/evenness_vector.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization core-metrics-results/evenness-group-significance.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/evenness_vector.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization core-metrics-results/evenness-group-significance.qzv
+Saved Visualization to: core-metrics-results/evenness-group-significance.qzv
+
+
+qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/shannon_vector.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization core-metrics-results/shannon-significance.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/shannon_vector.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization core-metrics-results/shannon-significance.qzv
+Saved Visualization to: core-metrics-results/shannon-significance.qzv
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ 
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/unweighted-unifrac-sample-type-significance.qzv --p-pairwise
+
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/unweighted-unifrac-sample-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-sample-type-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/unweighted-unifrac-kdiet-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/unweighted-unifrac-kdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-kdiet-significance.qz
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/unweighted-unifrac-mdiet-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/unweighted-unifrac-mdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-mdiet-significance.qzv
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+beta diversity:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --o-visualization core-metrics-results/unweighted-unifrac-diarrhoea-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --o-visualization core-metrics-results/unweighted-unifrac-diarrhoea-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-diarrhoea-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/unweighted-unifrac-litter-type-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/unweighted-unifrac-litter-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-litter-type-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/weighted-unifrac-sample-type-significance.qzv --p-pairwise
+
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/weighted-unifrac-sample-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-sample-type-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/bray-curtis-sample-type-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/bray-curtis-sample-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-sample-type-significance.qzv
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/jaccard-sample-type-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --o-visualization core-metrics-results/jaccard-sample-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-sample-type-significance.qzv
+
+
+litter type:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/weighted-unifrac-litter-type-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/weighted-unifrac-litter-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-litter-type-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/bray-curtis-litter-type-significance.qzv --p-pairwise
+
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/bray-curtis-litter-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-litter-type-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/jaccard-litter-type-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --o-visualization core-metrics-results/jaccard-litter-type-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-litter-type-significance.qzv
+
+
+mdiet:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/weighted-unifrac-mdiet-significance.qzv --p-pairwise
+
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/weighted-unifrac-mdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-mdiet-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/bray-curtis-mdiet-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/bray-curtis-mdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-mdiet-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/jaccard-mdiet-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column mdiet --o-visualization core-metrics-results/jaccard-mdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-mdiet-significance.qzv
+
+kdiet:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/weighted-unifrac-kdiet-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/weighted-unifrac-kdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-kdiet-significance.qzv
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/bray-curtis-kdiet-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/bray-curtis-kdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-kdiet-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/jaccard-kdiet-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column kdiet --o-visualization core-metrics-results/jaccard-kdiet-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-kdiet-significance.qzv
+
+
+Diarrhoea:
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --o-visualization core-metrics-results/weighted-unifrac-diarrhoea-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --o-visualization core-metrics-results/weighted-unifrac-diarrhoea-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-diarrhoea-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --o-visualization core-metrics-results/bray-curtis-diarrhoea-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --o-visualization core-metrics-results/bray-curtis-diarrhoea-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-diarrhoea-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea  --o-visualization core-metrics-results/jaccard-diarrhoea-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea  --o-visualization core-metrics-results/jaccard-diarrhoea-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-diarrhoea-significance.qzv
+
+
+queenKitten:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --o-visualization core-metrics-results/weighted-unifrac-queenKitten-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --o-visualization core-metrics-results/weighted-unifrac-queenKitten-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-queenKitten-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --o-visualization core-metrics-results/bray-curtis-queenKitten-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --o-visualization core-metrics-results/bray-curtis-queenKitten-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-queenKitten-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten  --o-visualization core-metrics-results/jaccard-queenKitten-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten  --o-visualization core-metrics-results/jaccard-queenKitten-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-queenKitten-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --o-visualization core-metrics-results/unweighted-unifrac-queenKitten-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --o-visualization core-metrics-results/unweighted-unifrac-queenKitten-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-queenKitten-significance.qzv
+
+
+queenName:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --o-visualization core-metrics-results/weighted-unifrac-queenName-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --o-visualization core-metrics-results/weighted-unifrac-queenName-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-queenName-significance.qzv
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --o-visualization core-metrics-results/bray-curtis-queenName-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --o-visualization core-metrics-results/bray-curtis-queenName-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-queenName-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName  --o-visualization core-metrics-results/jaccard-queenName-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName  --o-visualization core-metrics-results/jaccard-queenName-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-queenName-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --o-visualization core-metrics-results/unweighted-unifrac-queenName-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --o-visualization core-metrics-results/unweighted-unifrac-queenName-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-queenName-significance.qzv
+
+
+owner:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner --o-visualization core-metrics-results/weighted-unifrac-owner-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner --o-visualization core-metrics-results/weighted-unifrac-owner-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-owner-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner --o-visualization core-metrics-results/bray-curtis-owner-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner --o-visualization core-metrics-results/bray-curtis-owner-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-owner-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner  --o-visualization core-metrics-results/jaccard-owner-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner  --o-visualization core-metrics-results/jaccard-owner-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-owner-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner --o-visualization core-metrics-results/unweighted-unifrac-owner-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner --o-visualization core-metrics-results/unweighted-unifrac-owner-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-owner-significance.qzv
+
+
+timing:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --o-visualization core-metrics-results/weighted-unifrac-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --o-visualization core-metrics-results/weighted-unifrac-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-timing-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --o-visualization core-metrics-results/bray-curtis-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --o-visualization core-metrics-results/bray-curtis-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-timing-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing  --o-visualization core-metrics-results/jaccard-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing  --o-visualization core-metrics-results/jaccard-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-timing-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --o-visualization core-metrics-results/unweighted-unifrac-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --o-visualization core-metrics-results/unweighted-unifrac-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-timing-significance.qzv
+
+
+owner2:
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2 --o-visualization core-metrics-results/weighted-unifrac-owner2-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2 --o-visualization core-metrics-results/weighted-unifrac-owner2-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-owner2-significance.qzv
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2 --o-visualization core-metrics-results/bray-curtis-owner2-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2 --o-visualization core-metrics-results/bray-curtis-owner2-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-owner2-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2  --o-visualization core-metrics-results/jaccard-owner2-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2  --o-visualization core-metrics-results/jaccard-owner2-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-owner2-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2 --o-visualization core-metrics-results/unweighted-unifrac-owner2-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column owner2 --o-visualization core-metrics-results/unweighted-unifrac-owner2-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-owner2-significance.qzv
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+Alpha rarefaction:
+
+qiime diversity alpha-rarefaction --i-table table-12.qza --i-phylogeny rooted-tree.qza --p-max-depth 4000 --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization alpha-rarefaction.qzv
+
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime diversity alpha-rarefaction --i-table table-12.qza --i-phylogeny rooted-tree.qza --p-max-depth 4000 --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization alpha-rarefaction.qzv
+Saved Visualization to: alpha-rarefaction.qzv
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+taxanomy analysis:
+
+qiime feature-classifier classify-sklearn --i-classifier gg-13-8-99-515-806-nb-classifier.qza --i-reads rep-seqs-12.qza --o-classification taxonomy.qza
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime feature-classifier classify-sklearn --i-classifier gg-13-8-99-515-806-nb-classifier.qza --i-reads rep-seqs-12.qza --o-classification taxonomy.qza
+Saved FeatureData[Taxonomy] to: taxonomy.qza
+
+
+qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
+Saved Visualization to: taxonomy.qzv
+
+qiime taxa barplot --i-table table-12.qza --i-taxonomy taxonomy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization taxa-bar-plots.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime taxa barplot --i-table table-12.qza --i-taxonomy taxonomy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --o-visualization taxa-bar-plots.qzv
+Saved Visualization to: taxa-bar-plots.qzv
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+sample classifier:
+
+qiime sample-classifier classify-samples --i-table table-12.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --p-random-state 666 --p-n-jobs 1 --output-dir sample-classifier-results
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime sample-classifier classify-samples --i-table table-12.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --p-random-state 666 --p-n-jobs 1 --output-dir sample-classifier-results
+Saved SampleEstimator[Classifier] to: sample-classifier-results/sample_estimator.qza
+Saved FeatureData[Importance] to: sample-classifier-results/feature_importance.qza
+Saved SampleData[ClassifierPredictions] to: sample-classifier-results/predictions.qza
+Saved Visualization to: sample-classifier-results/model_summary.qzv
+Saved Visualization to: sample-classifier-results/accuracy_results.qzv
+Saved SampleData[Probabilities] to: sample-classifier-results/probabilities.qza
+Saved Visualization to: sample-classifier-results/heatmap.qzv
+Saved SampleData[TrueTargets] to: sample-classifier-results/training_targets.qza
+Saved SampleData[TrueTargets] to: sample-classifier-results/test_targets.qza
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Heatmap
+
+qiime sample-classifier heatmap --i-table table-12.qza --i-importance sample-classifier-results/feature_importance.qza --m-sample-metadata-file kittenDmetaAll_FINAL.txt --m-sample-metadata-column diarrhoea --p-group-samples --p-feature-count 100 --o-heatmap sample-classifier-results/heatmap_100-features.qzv --o-filtered-table sample-classifier-results/filtered-table_100-features.qza
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime sample-classifier heatmap --i-table table-12.qza --i-importance sample-classifier-results/feature_importance.qza --m-sample-metadata-file kittenDmetaAll_FINAL.txt --m-sample-metadata-column diarrhoea --p-group-samples --p-feature-count 100 --o-heatmap sample-classifier-results/heatmap_100-features.qzv --o-filtered-table sample-classifier-results/filtered-table_100-features.qza
+Saved Visualization to: sample-classifier-results/heatmap_100-features.qzv
+Saved FeatureTable[Frequency] to: sample-classifier-results/filtered-table_100-features.qza
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Heatmap using Gneiss:
+
+qiime gneiss correlation-clustering --i-table table-12.qza --o-clustering hierarchy.qza
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss correlation-clustering --i-table table-12.qza --o-clustering hierarchy.qza
+Saved Hierarchy to: hierarchy.qza
+
+
+qiime gneiss ilr-hierarchical --i-table table-12.qza --i-tree hierarchy.qza --o-balances balances.qza
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss ilr-hierarchical --i-table table-12.qza --i-tree hierarchy.qza --o-balances balances.qza
+Saved FeatureTable[Balance] to: balances.qza
+
+
+Diarhheoa heatmap
+
+qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --p-color-map seismic --o-visualization diarrhoea_heatmap.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column diarrhoea --p-color-map seismic --o-visualization diarrhoea_heatmap.qzv
+Plugin warning from gneiss:
+
+dendrogram-heatmap is deprecated and will be removed in a future version of this plugin.
+Saved Visualization to: diarrhoea_heatmap.qzv
+
+Sample type:
+
+qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --p-color-map seismic --o-visualization sample-type-heatmap.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column sample_type --p-color-map seismic --o-visualization sample-type-heatmap.qzv
+Plugin warning from gneiss:
+
+dendrogram-heatmap is deprecated and will be removed in a future version of this plugin.
+Saved Visualization to: sample-type-heatmap.qzv
+
+
+Litter type:
+
+qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --p-color-map seismic --o-visualization litter-type-heatmap.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column litter_type --p-color-map seismic --o-visualization litter-type-heatmap.qzv
+Plugin warning from gneiss:
+
+dendrogram-heatmap is deprecated and will be removed in a future version of this plugin.
+Saved Visualization to: litter-type-heatmap.qzv
+
+
+
+queenKitten:
+
+qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --p-color-map seismic --o-visualization queenKitten-heatmap.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenKitten --p-color-map seismic --o-visualization queenKitten-heatmap.qzv
+Plugin warning from gneiss:
+
+dendrogram-heatmap is deprecated and will be removed in a future version of this plugin.
+Saved Visualization to: queenKitten-heatmap.qzv
+
+
+
+queenName:
+
+qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --p-color-map seismic --o-visualization queenName-heatmap.qzv
+
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column queenName --p-color-map seismic --o-visualization queenName-heatmap.qzv
+Plugin warning from gneiss:
+
+dendrogram-heatmap is deprecated and will be removed in a future version of this plugin.
+Saved Visualization to: queenName-heatmap.qzv
+
+
+
+sampling timing: 
+
+qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --p-color-map seismic --o-visualization timing-heatmap.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/All_17092024$ qiime gneiss dendrogram-heatmap --i-table table-12.qza --i-tree hierarchy.qza --m-metadata-file kittenDmetaAll_FINAL.txt --m-metadata-column timing --p-color-map seismic --o-visualization timing-heatmap.qzv
+Plugin warning from gneiss:
+
+dendrogram-heatmap is deprecated and will be removed in a future version of this plugin.
+Saved Visualization to: timing-heatmap.qzv
+
+

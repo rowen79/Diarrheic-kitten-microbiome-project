@@ -1,0 +1,15 @@
+sample-id	forward-absolute-filepath	reverse-absolute-filepath
+1	/mnt/sda3/ROmasters/kittenDdata/fQsequences/1_S1_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/1_S1_L001_R2_001.fastq.gz
+2	/mnt/sda3/ROmasters/kittenDdata/fQsequences/2_S2_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/2_S2_L001_R2_001.fastq.gz
+3	/mnt/sda3/ROmasters/kittenDdata/fQsequences/3_S3_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/3_S3_L001_R2_001.fastq.gz
+4	/mnt/sda3/ROmasters/kittenDdata/fQsequences/4_S4_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/4_S4_L001_R2_001.fastq.gz
+15	/mnt/sda3/ROmasters/kittenDdata/fQsequences/15_S15_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/15_S15_L001_R2_001.fastq.gz
+16	/mnt/sda3/ROmasters/kittenDdata/fQsequences/16_S16_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/16_S16_L001_R2_001.fastq.gz
+17	/mnt/sda3/ROmasters/kittenDdata/fQsequences/17_S17_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/17_S17_L001_R2_001.fastq.gz
+18	/mnt/sda3/ROmasters/kittenDdata/fQsequences/18_S18_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/18_S18_L001_R2_001.fastq.gz
+19	/mnt/sda3/ROmasters/kittenDdata/fQsequences/19_S19_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/19_S19_L001_R2_001.fastq.gz
+20	/mnt/sda3/ROmasters/kittenDdata/fQsequences/20_S20_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/20_S20_L001_R2_001.fastq.gz
+72	/mnt/sda3/ROmasters/kittenDdata/fQsequences/72_S72_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/72_S72_L001_R2_001.fastq.gz
+73	/mnt/sda3/ROmasters/kittenDdata/fQsequences/73_S73_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/73_S73_L001_R2_001.fastq.gz
+75	/mnt/sda3/ROmasters/kittenDdata/fQsequences/75_S75_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/75_S75_L001_R2_001.fastq.gz
+a74	/mnt/sda3/ROmasters/kittenDdata/fQsequences/a74_S74_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/a74_S74_L001_R2_001.fastq.gz

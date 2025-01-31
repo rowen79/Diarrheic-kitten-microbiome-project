@@ -1,0 +1,19 @@
+sampleid	litter	litter_number	sample	sample_type	timing	litter_type	kittenID	sample_cat	diarrhoea	treatment	owner	breed	dob	weaning_date	age_weaned_wk	age_weaned_day	date_collected	week	age_wk	age_day	sample +/- weaning	Date_solids_started	wk_solids_started	day_solids_started	nursing+/-	site	medication	mdiet	kdiet	weaning_status
+6	ND Ind 1	15	NH4NY9	W-R	fresh	Diarrhoea	4	litter	N	Y	FNU	DSH	11/03/2019	17/04/2019	5	37	7/05/2019	9	8	57	3	2/04/2019	3	22	5	Qaurintine room	Antibiotics	wet + biscuits	wet + biscuits	weaned
+9	ND Ind 2	5	KM2NN10	W-R	fresh	Diarrhoea	2	litter	N	N	Breeder2	Burmese	21/01/2019	8/04/2019	11	77	15/04/2019	6	12	84	1	25/02/2019	5	35	7	Catery out the back	NA	wet + biscuits	wet + biscuits	weaned
+12	ND Ind 3	6	WR6NN11	W-R	fresh	Diarrhoea	6	individual	N	N	Breeder1	Siamese	22/08/2018	12/11/2018	12	82	20/11/2018	11	13	90	1	3/10/2018	6	42	7	Levin	NA	raw + wet + biscuits	raw + wet + biscuits	weaned
+23	Normal Ind 1	14	MC2NN10	W-N	fresh	Normal	2	individual	N	N	Breeder2	Burmese	9/03/2019	11/05/2019	9	63	15/05/2019	10	10	67	1	17/04/2019	6	39	4	Genevieve kitten room	Chlorsig night before	wet + biscuits	wet + biscuits	weaned
+25	Normal Ind 2	12	20-KH1NN10	W-N	fresh	Normal	1	individual	N	N	FNU	DSH	18/04/2020	11/06/2020	8	54	23/07/2020	10	14	96	6	22/05/2020	5	34	9	FNU kitten room	NA	wet + biscuits	wet + biscuits	weaned
+37	Normal Ind 3	11	AM4NN12	W-N	fresh	Normal	4	individual	N	N	Breeder3	Burmese	11/02/2019	1/05/2019	11	79	1/05/2019	12	11	79	0	29/03/2019	7	46	5	CY house bedroom	NA	raw + wet + biscuits	raw + wet + biscuits	weaned
+39	ND Litter 2	8	CR3NN10	W-R	fresh	Diarrhoea	3	litter	N	N	Breeder1	Siamese	27/08/2018	7/11/2018	10	72	13/11/2018	10	11	78	1	4/10/2018	5	38	6	Cahills	NA	raw + wet + biscuits	raw + wet + biscuits	weaned
+40	ND Litter 3	9	HC1NN8	W-R	fresh	Diarrhoea	1	litter	N	N	Breeder1	Siamese	6/08/2018	28/09/2018	8	53	30/10/2018	8	12	85	5	19/09/2018	6	44	6	Levin	NA	raw + wet + biscuits	raw + wet + biscuits	weaned
+41	ND Litter 4	16	JE?NN12 B	W-R	overnight	Diarrhoea	litter	litter	N	N	FNU	DSH	7/03/2019	17/04/2019	6	41	28/05/2019	12	12	82	6	2/04/2019	4	26	8	Qaurintine room	NA	wet + biscuits	wet + biscuits	weaned
+42	ND Litter 6	1	NE4NN6	W-R	fresh	Diarrhoea	4	litter	N	N	FNU	DSH	8/11/2020	4/01/2021	8	57	12/01/2021	6	9	65	1	7/12/2020	4	29	5	day room	NA	wet + biscuits	wet + biscuits	weaned
+43	ND Litter 7	2	SE3NN11	W-R	fresh	Diarrhoea	3	litter	N	N	FNU	DSH	4/11/2020	4/01/2021	9	61	11/02/2021	11	14	99	5	1/12/2020	4	27	10	FNU	NA	wet + biscuits	wet + biscuits	weaned
+44	ND Litter 8	10	TE?NN11 A	W-R	overnight	Diarrhoea	litter	litter	N	N	FNU	DSH	13/03/2019	17/04/2019	5	35	21/05/2019	11	10	69	5	2/04/2019	3	20	7	Qaurintine room	NA	wet + biscuits	wet + biscuits	weaned
+45	ND Litter 9	3	JE2NN8	W-R	fresh	Diarrhoea	2	litter	N	N	FNU	DSH	11/03/2021	1/06/2021	12	82	2/06/2021	8	12	83	0	13/04/2021	5	33	7	FNU	NA	wet + biscuits	wet + biscuits	weaned
+46	ND Litter 10	4	NH21-3NN12	W-R	fresh	Diarrhoea	3	litter	N	N	FNU	DSH	13/08/2021	10/10/2021	8	58	9/12/2021	12	17	118	9	24/09/2021	6	42	11	Hallway kitten room	NA	wet + biscuits	wet + biscuits	weaned
+47	ND Litter 11	13	NE22-5NN10	W-R	fresh	Diarrhoea	5	litter	N	N	FNU	DSH	17/02/2022	6/05/2022	11	78	26/05/2022	10	14	98	3	14/03/2022	4	25	10	Hallway kitten room	NA	wet + biscuits	wet + biscuits	weaned
+48	Normal Ind 4	12	20-KH2NN12	W-N	fresh	Normal	2	individual	N	N	FNU	DSH	18/04/2020	11/06/2020	8	54	3/08/2020	12	15	107	8	22/05/2020	5	34	10	Saw dust room	NA	wet + biscuits	wet + biscuits	weaned
+50	Normal Ind 5	12	20-KH3NN10 B	W-N	fresh	Normal	3	individual	N	N	FNU	DSH	18/04/2020	11/06/2020	8	54	24/07/2020	10	14	97	6	22/05/2020	5	34	9	FNU kitten room	NA	wet + biscuits	wet + biscuits	weaned
+71	ND Litter 1	7	LL4NN11	W-R	fresh	Diarrhoea	4	litter	N	N	Breeder3	Burmese	7/02/2019	1/05/2019	12	83	24/04/2019	11	11	76	-1	11/03/2019	5	32	6	CY house bedroom	NA	raw + wet + biscuits	raw + wet + biscuits	peri-weaning

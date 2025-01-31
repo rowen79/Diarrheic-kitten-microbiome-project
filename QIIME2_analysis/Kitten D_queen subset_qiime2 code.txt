@@ -1,0 +1,131 @@
+20/06/2024
+
+subset of queens to decide what to do with duplicates
+re-run 17072024 with timing variable added
+
+
+
+export PATH=/home/r/rowen1/miniconda3/bin:$PATH
+source activate
+conda activate qiime2-2023.2
+
+qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path queenSubsetLoadings.txt --input-format PairedEndFastqManifestPhred33V2 --output-path demux-paired-end.qza
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path queenSubsetLoadings.txt --input-format PairedEndFastqManifestPhred33V2 --output-path demux-paired-end.qza
+Imported queenSubsetLoadings.txt as PairedEndFastqManifestPhred33V2 to demux-paired-end.qza
+
+qiime demux summarize --i-data demux-paired-end.qza --o-visualization demux-paired-end.qzv
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime demux summarize --i-data demux-paired-end.qza --o-visualization demux-paired-end.qzv
+Saved Visualization to: demux-paired-end.qzv
+
+qiime dada2 denoise-paired --p-trunc-len-f 250 --p-trim-left-f 0 --p-trunc-len-r 240 --p-trim-left-r 0 --i-demultiplexed-seqs demux-paired-end.qza --o-representative-sequences rep-seqs-12.qza --o-table table-12.qza --o-denoising-stats denoising-stats.qza
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime dada2 denoise-paired --p-trunc-len-f 250 --p-trim-left-f 0 --p-trunc-len-r 240 --p-trim-left-r 0 --i-demultiplexed-seqs demux-paired-end.qza --o-representative-sequences rep-seqs-12.qza --o-table table-12.qza --o-denoising-stats denoising-stats.qza
+Saved FeatureTable[Frequency] to: table-12.qza
+Saved FeatureData[Sequence] to: rep-seqs-12.qza
+Saved SampleData[DADA2Stats] to: denoising-stats.qza
+
+
+qiime feature-table summarize --i-table table-12.qza --m-sample-metadata-file queenSubsetMeta.txt --o-visualization table-12.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime feature-table summarize --i-table table-12.qza --m-sample-metadata-file queenSubsetMeta.txt --o-visualization table-12.qzv
+Saved Visualization to: table-12.qzv
+
+
+qiime feature-table tabulate-seqs --i-data rep-seqs-12.qza --o-visualization rep-seqs-12.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime feature-table tabulate-seqs --i-data rep-seqs-12.qza --o-visualization rep-seqs-12.qzv
+Saved Visualization to: rep-seqs-12.qzv
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Generate a tree:
+
+qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs-12.qza --o-alignment aligned-rep-seqs.qza --o-masked-alignment masked-aligned-rep-seqs.qza --o-tree unrooted-tree.qza  --o-rooted-tree rooted-tree.qza
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime phylogeny align-to-tree-mafft-fasttree --i-sequences rep-seqs-12.qza --o-alignment aligned-rep-seqs.qza --o-masked-alignment masked-aligned-rep-seqs.qza --o-tree unrooted-tree.qza  --o-rooted-tree rooted-tree.qza
+Saved FeatureData[AlignedSequence] to: aligned-rep-seqs.qza
+Saved FeatureData[AlignedSequence] to: masked-aligned-rep-seqs.qza
+Saved Phylogeny[Unrooted] to: unrooted-tree.qza
+Saved Phylogeny[Rooted] to: rooted-tree.qza
+
+qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree.qza --i-table table-12.qza --p-sampling-depth 500 --m-metadata-file queenSubsetMeta.txt --output-dir core-metrics-results
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity core-metrics-phylogenetic --i-phylogeny rooted-tree.qza --i-table table-12.qza --p-sampling-depth 500 --m-metadata-file queenSubsetMeta.txt --output-dir core-metrics-results
+Saved FeatureTable[Frequency] to: core-metrics-results/rarefied_table.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/faith_pd_vector.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/observed_features_vector.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/shannon_vector.qza
+Saved SampleData[AlphaDiversity] to: core-metrics-results/evenness_vector.qza
+Saved DistanceMatrix to: core-metrics-results/unweighted_unifrac_distance_matrix.qza
+Saved DistanceMatrix to: core-metrics-results/weighted_unifrac_distance_matrix.qza
+Saved DistanceMatrix to: core-metrics-results/jaccard_distance_matrix.qza
+Saved DistanceMatrix to: core-metrics-results/bray_curtis_distance_matrix.qza
+Saved PCoAResults to: core-metrics-results/unweighted_unifrac_pcoa_results.qza
+Saved PCoAResults to: core-metrics-results/weighted_unifrac_pcoa_results.qza
+Saved PCoAResults to: core-metrics-results/jaccard_pcoa_results.qza
+Saved PCoAResults to: core-metrics-results/bray_curtis_pcoa_results.qza
+Saved Visualization to: core-metrics-results/unweighted_unifrac_emperor.qzv
+Saved Visualization to: core-metrics-results/weighted_unifrac_emperor.qzv
+Saved Visualization to: core-metrics-results/jaccard_emperor.qzv
+Saved Visualization to: core-metrics-results/bray_curtis_emperor.qzv
+
+
+qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/faith_pd_vector.qza --m-metadata-file queenSubsetMeta.txt --o-visualization core-metrics-results/faith-pd-group-significance.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/faith_pd_vector.qza --m-metadata-file queenSubsetMeta.txt --o-visualization core-metrics-results/faith-pd-group-significance.qzv
+Saved Visualization to: core-metrics-results/faith-pd-group-significance.qzv
+
+qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/evenness_vector.qza --m-metadata-file queenSubsetMeta.txt --o-visualization core-metrics-results/evenness-group-significance.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/evenness_vector.qza --m-metadata-file queenSubsetMeta.txt --o-visualization core-metrics-results/evenness-group-significance.qzv
+Saved Visualization to: core-metrics-results/evenness-group-significance.qzv
+
+qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/shannon_vector.qza --m-metadata-file queenSubsetMeta.txt --o-visualization core-metrics-results/shannon-significance.qzv
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity alpha-group-significance --i-alpha-diversity core-metrics-results/shannon_vector.qza --m-metadata-file queenSubsetMeta.txt --o-visualization core-metrics-results/shannon-significance.qzv
+Saved Visualization to: core-metrics-results/shannon-significance.qzv
+
+
+
+timing: 
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/unweighted-unifrac-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/unweighted-unifrac-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/unweighted-unifrac-timing-significance.qzv
+
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/weighted-unifrac-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/weighted-unifrac-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/weighted-unifrac-timing-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/bray-curtis-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/bray_curtis_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/bray-curtis-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/bray-curtis-timing-significance.qzv
+
+
+qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/jaccard-timing-significance.qzv --p-pairwise
+
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime diversity beta-group-significance --i-distance-matrix core-metrics-results/jaccard_distance_matrix.qza --m-metadata-file queenSubsetMeta.txt --m-metadata-column timing --o-visualization core-metrics-results/jaccard-timing-significance.qzv --p-pairwise
+Saved Visualization to: core-metrics-results/jaccard-timing-significance.qzv
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+taxanomy analysis:
+
+qiime feature-classifier classify-sklearn --i-classifier gg-13-8-99-515-806-nb-classifier.qza --i-reads rep-seqs-12.qza --o-classification taxonomy.qza
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime feature-classifier classify-sklearn --i-classifier gg-13-8-99-515-806-nb-classifier.qza --i-reads rep-seqs-12.qza --o-classification taxonomy.qza
+Saved FeatureData[Taxonomy] to: taxonomy.qza
+
+qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
+Saved Visualization to: taxonomy.qzv
+
+qiime taxa barplot --i-table table-12.qza --i-taxonomy taxonomy.qza --m-metadata-file queenSubsetMeta.txt --o-visualization taxa-bar-plots.qzv
+(qiime2-2023.2) rowen1@hpc-svs04:/mnt/sda3/ROmasters/kittenDdataset_13032024/queenSubset$ qiime taxa barplot --i-table table-12.qza --i-taxonomy taxonomy.qza --m-metadata-file queenSubsetMeta.txt --o-visualization taxa-bar-plots.qzv
+Saved Visualization to: taxa-bar-plots.qzv
+
+

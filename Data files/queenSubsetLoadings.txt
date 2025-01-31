@@ -1,0 +1,7 @@
+sample-id	forward-absolute-filepath	reverse-absolute-filepath
+1	/mnt/sda3/ROmasters/kittenDdata/fQsequences/1_S1_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/1_S1_L001_R2_001.fastq.gz
+3	/mnt/sda3/ROmasters/kittenDdata/fQsequences/3_S3_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/3_S3_L001_R2_001.fastq.gz
+4	/mnt/sda3/ROmasters/kittenDdata/fQsequences/4_S4_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/4_S4_L001_R2_001.fastq.gz
+72	/mnt/sda3/ROmasters/kittenDdata/fQsequences/72_S72_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/72_S72_L001_R2_001.fastq.gz
+73	/mnt/sda3/ROmasters/kittenDdata/fQsequences/73_S73_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/73_S73_L001_R2_001.fastq.gz
+75	/mnt/sda3/ROmasters/kittenDdata/fQsequences/75_S75_L001_R1_001.fastq.gz	/mnt/sda3/ROmasters/kittenDdata/fQsequences/75_S75_L001_R2_001.fastq.gz

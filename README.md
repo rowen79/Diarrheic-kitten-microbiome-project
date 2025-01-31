@@ -1,4 +1,4 @@
-# Diarrheic-kitten-microbiome-project-
+# Diarrheic-kitten-microbiome-project
 
 Analysis of the differences in the microbiome between kittens that do and do not develop diarrhoea.
 
