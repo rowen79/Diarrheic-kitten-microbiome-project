@@ -20,6 +20,8 @@ These are the data files contained in this repository:
 -	queenSubsetLoadings.txt
 -	queenSubsetMeta.txt
 
+***
+
 To replicate the QIIME2 analysis, use the documents below:
 -	Kitten D_All dataset_qiime2 code.txt
 -	Kitten D_Kitten only_qiime2 code.txt
@@ -27,6 +29,8 @@ To replicate the QIIME2 analysis, use the documents below:
 -	Kitten D_PPweaning_qiime2 code.txt
 -	Kitten D_Queen only_qiime2 code.txt
 -	Kitten D_queen subset_qiime2 code.txt
+
+***
 
 To replicate the R analysis, please use the below documents:
 -	All-dataset_phylum-level.html
